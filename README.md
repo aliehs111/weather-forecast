@@ -23,8 +23,8 @@ Lastly, the user search history needed a function for the user to click on their
  - Documentation for Bootstrap and Day.js was essential. 
 
  ## Screenshot and Link
- 
-https://user-images.githubusercontent.com/128503077/249266699-cc41b491-e08c-466d-95a9-d4ed479d314a.png
+
+<img width="1717" alt="Screenshot 2023-06-27 at 3 42 17 PM" src="https://github.com/aliehs111/weather-forecast/assets/128503077/82f6821c-b300-46ae-8864-5070441fac8e">
 
 https://github.com/aliehs111/weather-forecast/deployments/activity_log?environment=github-pages
 
