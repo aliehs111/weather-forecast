@@ -1,21 +1,21 @@
 var searchHistory = [];
 var weatherApiRootUrl = 'https://api.openweathermap.org';
 var weatherApiKey = '4307d74e4977cb51bc4d392a5c8c2e3c';
+//global variables to be used in multiple functions//
 
 
-
-
+//global variables referencing elements in html with their ids//
 var searchForm = document.querySelector('#search-form');
 var searchInput = document.querySelector('#search-input');
 var todayContainer = document.querySelector('#today');
 var forecastContainer = document.querySelector('#forecast');
 var searchHistoryContainer = document.querySelector('#history');
 
-
+//to use the date formats from day.js//
 dayjs.extend(window.dayjs_plugin_utc);
 dayjs.extend(window.dayjs_plugin_timezone);
 
-
+//function to take user input in search form and dynamically create buttons and styled with bootstrap//
 function renderSearchHistory() {
   searchHistoryContainer.innerHTML = '';
 
@@ -26,14 +26,14 @@ function renderSearchHistory() {
     btn.setAttribute('aria-controls', 'today forecast');
     btn.classList.add('btn-history', 'list-group-item', 'mt-2', 'mb-2', 'list-group-item-secondary');
 
-
+//this takes the additional user inputs and appends to the list of cities for the user to click on later
     btn.setAttribute('data-search', searchHistory[i]);
     btn.textContent = searchHistory[i];
     searchHistoryContainer.append(btn);
   }
 }
 
-
+//function to put user search history in a string in local storage 
 function appendToHistory(search) {
 
   if (searchHistory.indexOf(search) !== -1) {
@@ -45,7 +45,7 @@ function appendToHistory(search) {
   renderSearchHistory();
 }
 
-
+//function to show the user's search history in the list of buttons
 function initSearchHistory() {
   var storedHistory = localStorage.getItem('search-history');
   if (storedHistory) {
@@ -54,7 +54,7 @@ function initSearchHistory() {
   renderSearchHistory();
 }
 
-
+//function to display the weather each time the user inputs text in the search or clicks a button from search history//
 function renderCurrentWeather(city, weather) {
   var date = dayjs().format('M/D/YYYY');
 
@@ -63,7 +63,7 @@ function renderCurrentWeather(city, weather) {
   var humidity = weather.main.humidity;
   var iconUrl = `https://openweathermap.org/img/w/${weather.weather[0].icon}.png`;
   var iconDescription = weather.weather[0].description || weather[0].main;
-
+//variables for just this function that create the card divs to display the weather
   var card = document.createElement('div');
   var cardBody = document.createElement('div');
   var heading = document.createElement('h2');
@@ -71,7 +71,7 @@ function renderCurrentWeather(city, weather) {
   var tempEl = document.createElement('p');
   var windEl = document.createElement('p');
   var humidityEl = document.createElement('p');
-
+//setting the attributes for the cards and adding it to the card bodies
   card.setAttribute('class', 'card');
   cardBody.setAttribute('class', 'card-body');
   card.append(cardBody);
@@ -80,7 +80,7 @@ function renderCurrentWeather(city, weather) {
   tempEl.setAttribute('class', 'card-text');
   windEl.setAttribute('class', 'card-text');
   humidityEl.setAttribute('class', 'card-text');
-
+//This evaluates city/date/weather variables so to assign values in the cards
   heading.textContent = `${city} (${date})`;
   weatherIcon.setAttribute('src', iconUrl);
   weatherIcon.setAttribute('alt', iconDescription);
@@ -137,15 +137,15 @@ function renderForecastCard(forecast) {
   forecastContainer.append(col);
 }
 
-
+//function to manipulate day.js per day as shown in documentation: https://day.js.org/docs/en/manipulate/add
 function renderForecast(dailyForecast) {
 
   var startDt = dayjs().add(1, 'day').startOf('day').unix();
   var endDt = dayjs().add(6, 'day').startOf('day').unix();
-
+//variables made by dynamically creating elements to use for the display
   var headingCol = document.createElement('div');
   var heading = document.createElement('h4');
-
+//attributes for styling and text for h4 element
   headingCol.setAttribute('class', 'col-12');
   heading.textContent = '5-Day Forecast:';
   headingCol.append(heading);
@@ -165,17 +165,17 @@ function renderForecast(dailyForecast) {
     }
   }
 }
-
+//function to display the city using the data from the fetch function//
 function renderItems(city, data) {
   renderCurrentWeather(city, data.list[0], data.city.timezone);
   renderForecast(data.list);
 }
-
+//fuction to get the weather data from the api by using the latitude and longitude of the location
 function fetchWeather(location) {
   var { lat } = location;
   var { lon } = location;
   var city = location.name;
-
+//this apiUrl specifically gets the data via coordinates of the location
   var apiUrl = `${weatherApiRootUrl}/data/2.5/forecast?lat=${lat}&lon=${lon}&units=imperial&appid=${weatherApiKey}`;
 
   fetch(apiUrl)
